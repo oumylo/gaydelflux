@@ -56,9 +56,9 @@ function construireInscription() {
                                 class="w-full pl-9 py-2 border border-gray-300 rounded-lg bg-gray-50
                                        focus:outline-none focus:border-brandBlue appearance-none">
                                 <option value="">-- Choisir une station --</option>
-                                <option value="yeumbeul">Yeumbeul</option>
-                                <option value="pikine">Pikine</option>
-                                <option value="rufisque">Rufisque</option>
+                                <option value="Yeumbeul">Yeumbeul</option>
+                                <option value="Pikine">Pikine</option>
+                                <option value="Rufisque">Rufisque</option>
                             </select>
                         </div>
                     </div>
@@ -92,24 +92,20 @@ function construireInscription() {
                     <p class="text-sm text-center text-gray-500">
                         Déjà un compte ?
                         <a href="#" onclick="showPage('loginPage')"
-                           class="text-brandOrange font-semibold hover:underline">
-                            Se connecter
-                        </a>
+                           class="text-brandOrange font-semibold hover:underline">Se connecter</a>
                     </p>
                 </form>
             </div>
         </div>
     `;
 
-   
     document.getElementById("inscriptionForm").addEventListener("submit", function (e) {
         e.preventDefault();
-
         hideMessage("inscriptionError");
         hideMessage("inscriptionSuccess");
 
         var nomComplet      = document.getElementById("inscNom").value.trim();
-        var matricule       = document.getElementById("inscMatricule").value.trim();
+        var matricule       = document.getElementById("inscMatricule").value.trim().toUpperCase();
         var station         = document.getElementById("inscStation").value;
         var password        = document.getElementById("inscPassword").value;
         var confirmPassword = document.getElementById("inscConfirmPassword").value;
@@ -125,13 +121,24 @@ function construireInscription() {
             return;
         }
 
-        var user = { nomComplet: nomComplet, matricule: matricule, station: station, password: password };
+        // Sauvegarder l'utilisateur en JSON
+        var user = {
+            nomComplet: nomComplet,
+            matricule:  matricule,
+            station:    station,
+            password:   password,
+            dateInscription: new Date().toLocaleDateString('fr-FR')
+        };
         localStorage.setItem("user_" + matricule, JSON.stringify(user));
 
-        var s = document.getElementById("inscriptionSuccess");
-        s.textContent = "Inscription réussie ! Redirection...";
-        s.classList.remove("hidden");
+        // Ajouter à la liste des utilisateurs
+        var listeUsers = lireDonnees("utilisateurs");
+        listeUsers.push({ nomComplet: nomComplet, matricule: matricule, station: station });
+        sauvegarderDonnees("utilisateurs", listeUsers);
 
+        var s = document.getElementById("inscriptionSuccess");
+        s.textContent = "Inscription réussie ! Redirection vers la connexion...";
+        s.classList.remove("hidden");
         document.getElementById("inscriptionForm").reset();
 
         setTimeout(function () {

@@ -1,4 +1,6 @@
-
+// ================================================
+// login.js — construit + gère la connexion
+// ================================================
 
 function construireLogin() {
     document.getElementById("loginPage").innerHTML = `
@@ -52,33 +54,36 @@ function construireLogin() {
                     <p class="text-sm text-center text-gray-500">
                         Pas de compte ?
                         <a href="#" onclick="showPage('inscriptionPage')"
-                           class="text-brandOrange font-semibold hover:underline">
-                            S'inscrire
-                        </a>
+                           class="text-brandOrange font-semibold hover:underline">S'inscrire</a>
                     </p>
                 </form>
             </div>
         </div>
     `;
 
-    // Attacher l'événement submit après injection du HTML
     document.getElementById("loginForm").addEventListener("submit", function (e) {
         e.preventDefault();
-
         hideMessage("loginError");
 
-        var matricule = document.getElementById("loginMatricule").value.trim();
+        var matricule = document.getElementById("loginMatricule").value.trim().toUpperCase();
         var password  = document.getElementById("loginPassword").value;
 
         if (!matricule) { showError("loginError", "Veuillez saisir votre matricule."); return; }
         if (!password)  { showError("loginError", "Veuillez saisir votre mot de passe."); return; }
 
         var userJSON = localStorage.getItem("user_" + matricule);
-        if (!userJSON) { showError("loginError", "Matricule introuvable. Inscrivez-vous d'abord."); return; }
+        if (!userJSON) {
+            showError("loginError", "Matricule introuvable. Inscrivez-vous d'abord.");
+            return;
+        }
 
         var user = JSON.parse(userJSON);
-        if (user.password !== password) { showError("loginError", "Mot de passe incorrect."); return; }
+        if (user.password !== password) {
+            showError("loginError", "Mot de passe incorrect.");
+            return;
+        }
 
+        // Sauvegarder la session
         sessionStorage.setItem("currentUser", JSON.stringify(user));
         document.getElementById("loginForm").reset();
         afficherDashboard(user);

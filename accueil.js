@@ -1,25 +1,22 @@
+// ================================================
+// accueil.js — page d'accueil
+// ================================================
 
 function construireAccueil() {
     document.getElementById("accueilPage").innerHTML = `
 
-        <!-- NAVBAR -->
         <nav class="bg-white shadow-sm sticky top-0 z-50">
             <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-
                 <div class="flex items-center gap-2">
                     <img src="images/logo.png" class="h-10 w-auto object-contain"
                          onerror="this.style.display='none'">
-                    <span class="text-brandBlue font-bold text-lg uppercase tracking-wide">
-                        Gaydel Flux
-                    </span>
+                    <span class="text-brandBlue font-bold text-lg uppercase tracking-wide">Gaydel Flux</span>
                 </div>
-
                 <div class="hidden md:flex items-center gap-8">
                     <a href="#" class="text-gray-600 hover:text-brandBlue text-sm font-medium">Solution</a>
                     <a href="#" class="text-gray-600 hover:text-brandBlue text-sm font-medium">Fonctionnement</a>
                     <a href="#" class="text-gray-600 hover:text-brandBlue text-sm font-medium">Rôle</a>
                 </div>
-
                 <button onclick="showPage('loginPage')"
                     class="bg-brandOrange hover:bg-brandOrangeHover text-white text-sm
                            font-semibold px-5 py-2 rounded-lg transition">
@@ -28,7 +25,6 @@ function construireAccueil() {
             </div>
         </nav>
 
-        <!-- HERO -->
         <section class="relative w-full" style="height:420px">
             <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80"
                  alt="Lubrifiants"
@@ -43,7 +39,6 @@ function construireAccueil() {
             </div>
         </section>
 
-        <!-- NOS SOLUTIONS -->
         <section class="bg-gray-100 py-14 px-6">
             <div class="max-w-4xl mx-auto">
                 <h2 class="text-brandBlue text-2xl font-bold text-center mb-1">Nos Solutions</h2>
@@ -58,7 +53,8 @@ function construireAccueil() {
                             <h3 class="text-brandBlue font-bold text-sm">Gestion des Stock</h3>
                         </div>
                         <p class="text-gray-500 text-xs leading-relaxed">
-                            Suivi en temps réel des niveaux par produit et par format. Alertes automatiques au passage du seuil.
+                            Suivi en temps réel des niveaux par produit et par format.
+                            Alertes automatiques au passage du seuil.
                         </p>
                     </div>
 
@@ -70,7 +66,8 @@ function construireAccueil() {
                             <h3 class="text-brandBlue font-bold text-sm">Commandes</h3>
                         </div>
                         <p class="text-gray-500 text-xs leading-relaxed">
-                            Réception et suivi des commandes fournisseurs. Consolidation des besoins de toutes les stations.
+                            Réception et suivi des commandes fournisseurs.
+                            Consolidation des besoins de toutes les stations.
                         </p>
                     </div>
 
@@ -82,7 +79,8 @@ function construireAccueil() {
                             <h3 class="text-brandBlue font-bold text-sm">Réceptions</h3>
                         </div>
                         <p class="text-gray-500 text-xs leading-relaxed">
-                            Enregistrement des arrivées produits en entrepôt. Vérification quantité et signalement des écarts.
+                            Enregistrement des arrivées produits en entrepôt.
+                            Vérification quantité et signalement des écarts.
                         </p>
                     </div>
 
@@ -94,7 +92,8 @@ function construireAccueil() {
                             <h3 class="text-brandBlue font-bold text-sm">Livraisons</h3>
                         </div>
                         <p class="text-gray-500 text-xs leading-relaxed">
-                            Génération de bons de livraison et mouvements de transfert vers les stations du réseau.
+                            Génération de bons de livraison et mouvements de transfert
+                            vers les stations du réseau.
                         </p>
                     </div>
 
@@ -106,7 +105,8 @@ function construireAccueil() {
                             <h3 class="text-brandBlue font-bold text-sm">Alertes</h3>
                         </div>
                         <p class="text-gray-500 text-xs leading-relaxed">
-                            Notification immédiate quand un produit passe sous le seuil minimum défini.
+                            Notification immédiate quand un produit passe
+                            sous le seuil minimum défini.
                         </p>
                     </div>
 
@@ -118,7 +118,8 @@ function construireAccueil() {
                             <h3 class="text-brandBlue font-bold text-sm">Tableau de bord</h3>
                         </div>
                         <p class="text-gray-500 text-xs leading-relaxed">
-                            Vue synthétique des indicateurs clés : commandes en cours, total stock, activités récentes.
+                            Vue synthétique des indicateurs clés : commandes en cours,
+                            total stock, activités récentes.
                         </p>
                     </div>
 
@@ -126,7 +127,6 @@ function construireAccueil() {
             </div>
         </section>
 
-        <!-- COMMENT ÇA FONCTIONNE -->
         <section class="bg-gray-50 py-14 px-6">
             <div class="max-w-3xl mx-auto">
                 <h2 class="text-brandBlue text-2xl font-bold text-center mb-1">Comment ça fonctionne</h2>
@@ -153,7 +153,6 @@ function construireAccueil() {
             </div>
         </section>
 
-        <!-- FOOTER -->
         <footer class="bg-brandBlue text-white py-6 px-6">
             <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-2">
