@@ -1,7 +1,5 @@
-
 function construireDashboard() {
     document.getElementById("dashboardPage").innerHTML = `
-
         <div class="flex flex-col min-h-screen bg-gray-100">
 
             <!-- TOPBAR -->
@@ -74,6 +72,15 @@ function construireDashboard() {
                         Ma commande
                     </button>
 
+                    <!-- Client : ses commandes -->
+                    <button id="btn-mesCommandesClient" data-role="client"
+                        onclick="afficherSection('mesCommandesClient')"
+                        class="flex items-center gap-3 px-5 py-3 text-sm text-gray-500
+                               hover:bg-gray-50 hover:text-brandBlue border-l-4 border-transparent transition mt-1">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        Mes commandes
+                    </button>
+
                     <!-- DG seulement : gestion des utilisateurs -->
                     <button id="btn-utilisateurs" data-role="dg"
                         onclick="afficherSection('utilisateurs')"
@@ -102,8 +109,8 @@ function construireDashboard() {
                             <p class="text-gray-500 text-sm mt-1">Vue d'ensemble du réseau de distribution</p>
                         </div>
 
-                        <!-- KPI -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                        <!-- KPI (staff seulement) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8" data-role="gestionnaire">
                             <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
                                 <div class="flex items-center gap-3 mb-3">
                                     <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center">
@@ -134,7 +141,7 @@ function construireDashboard() {
                         </div>
 
                         <!-- Cartes stock (DG + gestionnaire) -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" data-role="gestionnaire">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6" data-role="gestionnaire">
                             <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl
                                         transition group cursor-pointer"
                                  onclick="afficherSection('lubrifiant')">
@@ -175,6 +182,122 @@ function construireDashboard() {
                                 Passer une commande
                             </button>
                         </div>
+
+                        <!-- Espace client -->
+                        <div data-role="client"
+                             class="space-y-6">
+                            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-10 h-10 rounded-lg bg-yellow-50 flex items-center justify-center">
+                                        <i class="fa-solid fa-user text-yellow-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-brandBlue font-semibold">Espace Client</p>
+                                        <p class="text-gray-400 text-xs">Accédez à nos services</p>
+                                    </div>
+                                </div>
+
+                                <!-- Tableau des fonctionnalités client -->
+                                <div class="overflow-hidden rounded-xl border border-gray-200">
+                                    <table class="w-full text-sm">
+                                        <thead class="bg-gray-50 border-b border-gray-200">
+                                            <tr>
+                                                <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Service</th>
+                                                <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Description</th>
+                                                <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Statut</th>
+                                                <th class="px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Accès</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            <tr class="hover:bg-gray-50 transition cursor-pointer"
+                                                onclick="afficherSection('mesCommandesClient')">
+                                                <td class="px-5 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                                                            <i class="fa-solid fa-bag-shopping text-brandBlue text-sm"></i>
+                                                        </div>
+                                                        <span class="font-semibold text-gray-700">Mes commandes</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-5 py-4 text-gray-500 text-sm">Consulter et suivre vos commandes</td>
+                                                <td class="px-5 py-4">
+                                                    <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Disponible</span>
+                                                </td>
+                                                <td class="px-5 py-4 text-center">
+                                                    <button class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs
+                                                                   font-semibold px-4 py-2 rounded-full transition">
+                                                        Ouvrir
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 transition cursor-pointer"
+                                                onclick="afficherSection('catalogueClient')">
+                                                <td class="px-5 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center">
+                                                            <i class="fa-solid fa-oil-can text-brandOrange text-sm"></i>
+                                                        </div>
+                                                        <span class="font-semibold text-gray-700">Catalogue produits</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-5 py-4 text-gray-500 text-sm">Voir les produits disponibles</td>
+                                                <td class="px-5 py-4">
+                                                    <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Disponible</span>
+                                                </td>
+                                                <td class="px-5 py-4 text-center">
+                                                    <button class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs
+                                                                   font-semibold px-4 py-2 rounded-full transition">
+                                                        Ouvrir
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 transition cursor-pointer"
+                                                onclick="afficherSection('nouvelleCommandeClient')">
+                                                <td class="px-5 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
+                                                            <i class="fa-solid fa-plus text-purple-600 text-sm"></i>
+                                                        </div>
+                                                        <span class="font-semibold text-gray-700">Nouvelle commande</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-5 py-4 text-gray-500 text-sm">Passer une nouvelle commande</td>
+                                                <td class="px-5 py-4">
+                                                    <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Disponible</span>
+                                                </td>
+                                                <td class="px-5 py-4 text-center">
+                                                    <button class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs
+                                                                   font-semibold px-4 py-2 rounded-full transition">
+                                                        Ouvrir
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50 transition cursor-pointer"
+                                                onclick="afficherSection('monCompteClient')">
+                                                <td class="px-5 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
+                                                            <i class="fa-solid fa-gear text-gray-500 text-sm"></i>
+                                                        </div>
+                                                        <span class="font-semibold text-gray-700">Mon compte</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-5 py-4 text-gray-500 text-sm">Gérer vos informations personnelles</td>
+                                                <td class="px-5 py-4">
+                                                    <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Disponible</span>
+                                                </td>
+                                                <td class="px-5 py-4 text-center">
+                                                    <button class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs
+                                                                   font-semibold px-4 py-2 rounded-full transition">
+                                                        Ouvrir
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- ══ SECTION COMMANDES (DG + gestionnaire) ══ -->
@@ -195,7 +318,6 @@ function construireDashboard() {
                                         <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Produit</th>
                                         <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Qté</th>
                                         <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Statut</th>
-                                        <!-- Actions DG seulement -->
                                         <th class="px-5 py-3 text-xs font-semibold text-gray-500 uppercase" data-role="dg">Action</th>
                                     </tr>
                                 </thead>
@@ -278,8 +400,6 @@ function construireDashboard() {
                                 </div>
                             </form>
                         </div>
-
-                        <!-- Historique commandes du gérant -->
                         <div class="mt-6">
                             <h2 class="text-brandBlue font-semibold text-sm mb-3">Mes commandes passées</h2>
                             <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
@@ -300,9 +420,18 @@ function construireDashboard() {
 
                     <!-- ══ SECTION UTILISATEURS (DG seulement) ══ -->
                     <div id="section-utilisateurs" class="hidden">
-                        <div class="mb-6">
-                            <h1 class="text-brandOrange text-xl font-bold">Gestion des utilisateurs</h1>
-                            <p class="text-gray-500 text-sm mt-1">Tous les comptes inscrits</p>
+                        <div class="mb-6 flex items-center justify-between">
+                            <div>
+                                <h1 class="text-brandOrange text-xl font-bold">Gestion des utilisateurs</h1>
+                                <p class="text-gray-500 text-sm mt-1">Tous les comptes inscrits</p>
+                            </div>
+                            <!-- Bouton inscription staff, visible uniquement pour le DG -->
+                            <button onclick="afficherFormulaireInscriptionDG()"
+                                class="flex items-center gap-2 bg-brandOrange hover:bg-brandOrangeHover
+                                       text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+                                <i class="fa-solid fa-user-plus"></i>
+                                Inscrire un membre
+                            </button>
                         </div>
                         <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                             <table class="w-full text-sm">
@@ -400,20 +529,93 @@ function construireDashboard() {
                         </div>
                     </div>
 
+                    <!-- ══ SECTIONS CLIENT ══ -->
+                    <div id="section-mesCommandesClient" class="hidden">
+                        <div class="mb-6 flex items-center gap-3">
+                            <button onclick="afficherSection('accueil')"
+                                class="text-gray-400 hover:text-brandBlue transition text-lg">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <div>
+                                <h1 class="text-brandOrange text-xl font-bold">Mes commandes</h1>
+                                <p class="text-gray-500 text-sm mt-1">Suivi de vos commandes</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-10 text-center">
+                            <i class="fa-solid fa-bag-shopping text-gray-300 text-5xl mb-4"></i>
+                            <p class="text-gray-500 font-medium">Fonctionnalité en cours de développement</p>
+                            <p class="text-gray-400 text-sm mt-1">Vos commandes apparaîtront ici bientôt.</p>
+                        </div>
+                    </div>
+
+                    <div id="section-catalogueClient" class="hidden">
+                        <div class="mb-6 flex items-center gap-3">
+                            <button onclick="afficherSection('accueil')"
+                                class="text-gray-400 hover:text-brandBlue transition text-lg">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <div>
+                                <h1 class="text-brandOrange text-xl font-bold">Catalogue produits</h1>
+                                <p class="text-gray-500 text-sm mt-1">Nos produits disponibles</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-10 text-center">
+                            <i class="fa-solid fa-oil-can text-gray-300 text-5xl mb-4"></i>
+                            <p class="text-gray-500 font-medium">Fonctionnalité en cours de développement</p>
+                            <p class="text-gray-400 text-sm mt-1">Le catalogue sera disponible prochainement.</p>
+                        </div>
+                    </div>
+
+                    <div id="section-nouvelleCommandeClient" class="hidden">
+                        <div class="mb-6 flex items-center gap-3">
+                            <button onclick="afficherSection('accueil')"
+                                class="text-gray-400 hover:text-brandBlue transition text-lg">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <div>
+                                <h1 class="text-brandOrange text-xl font-bold">Nouvelle commande</h1>
+                                <p class="text-gray-500 text-sm mt-1">Passez votre commande en ligne</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-10 text-center">
+                            <i class="fa-solid fa-plus-circle text-gray-300 text-5xl mb-4"></i>
+                            <p class="text-gray-500 font-medium">Fonctionnalité en cours de développement</p>
+                            <p class="text-gray-400 text-sm mt-1">Vous pourrez passer commande ici bientôt.</p>
+                        </div>
+                    </div>
+
+                    <div id="section-monCompteClient" class="hidden">
+                        <div class="mb-6 flex items-center gap-3">
+                            <button onclick="afficherSection('accueil')"
+                                class="text-gray-400 hover:text-brandBlue transition text-lg">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <div>
+                                <h1 class="text-brandOrange text-xl font-bold">Mon compte</h1>
+                                <p class="text-gray-500 text-sm mt-1">Vos informations personnelles</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-10 text-center">
+                            <i class="fa-solid fa-gear text-gray-300 text-5xl mb-4"></i>
+                            <p class="text-gray-500 font-medium">Fonctionnalité en cours de développement</p>
+                            <p class="text-gray-400 text-sm mt-1">La gestion de compte sera disponible bientôt.</p>
+                        </div>
+                    </div>
+
                 </main>
             </div>
         </div>
     `;
 
-    
     document.getElementById("formAjouterCommande")
             .addEventListener("submit", soumettreCommandeGerant);
 }
 
 
 var SECTIONS_DB = ['accueil','commandes','receptions','maCommande',
-                   'utilisateurs','lubrifiant','accessoire','recherche'];
-var BTNS_DB     = ['accueil','commandes','receptions','maCommande','utilisateurs'];
+                   'utilisateurs','lubrifiant','accessoire','recherche',
+                   'mesCommandesClient','catalogueClient','nouvelleCommandeClient','monCompteClient'];
+var BTNS_DB     = ['accueil','commandes','receptions','maCommande','utilisateurs','mesCommandesClient'];
 
 function afficherSection(nom) {
     SECTIONS_DB.forEach(function (id) {
@@ -436,7 +638,6 @@ function afficherSection(nom) {
         }
     });
 
-  
     if (nom === 'lubrifiant')   chargerTableau('lubrifiant');
     if (nom === 'accessoire')   chargerTableau('accessoire');
     if (nom === 'commandes')    chargerTableauCommandes();
@@ -464,17 +665,14 @@ function chargerTableau(type) {
         }).join('');
 }
 
-
 function chargerTableauCommandes() {
     var tbody     = document.getElementById('tbody-commandes');
     var commandes = lireDonnees("commandes");
     var user      = JSON.parse(sessionStorage.getItem("currentUser") || "{}");
-
     if (!tbody) return;
     tbody.innerHTML = commandes.length === 0
         ? '<tr><td colspan="7" class="px-5 py-8 text-center text-gray-400">Aucune commande</td></tr>'
         : commandes.map(function(c) {
-          
             var btnValider = user.role === 'dg' && c.statut === 'En attente'
                 ? `<button onclick="validerCommandeDG('${c.numero}')"
                        class="bg-green-500 hover:bg-green-600 text-white text-xs
@@ -494,7 +692,6 @@ function chargerTableauCommandes() {
         }).join('');
 }
 
-
 function validerCommandeDG(numero) {
     var commandes = lireDonnees("commandes");
     commandes = commandes.map(function(c) {
@@ -504,7 +701,6 @@ function validerCommandeDG(numero) {
     sauvegarderDonnees("commandes", commandes);
     chargerTableauCommandes();
 }
-
 
 function chargerSelectCommandes() {
     var sel       = document.getElementById('selectCommande');
@@ -517,22 +713,18 @@ function chargerSelectCommandes() {
              });
 }
 
-
 function validerReception() {
     var sel    = document.getElementById('selectCommande');
     var numero = sel ? sel.value : '';
     if (!numero) { alert("Veuillez sélectionner une commande."); return; }
-
     var commandes = lireDonnees("commandes");
     commandes = commandes.map(function(c) {
         if (c.numero === numero) c.statut = "Livrée";
         return c;
     });
     sauvegarderDonnees("commandes", commandes);
-
     var s = document.getElementById("recepSuccess");
     if (s) { s.textContent = "Commande " + numero + " marquée comme Livrée !"; s.classList.remove("hidden"); }
-
     setTimeout(function() {
         hideMessage("recepSuccess");
         chargerSelectCommandes();
@@ -540,12 +732,9 @@ function validerReception() {
     }, 1500);
 }
 
-
 function chargerSectionGerant() {
     var user = JSON.parse(sessionStorage.getItem("currentUser") || "{}");
-
-  
-    var sel = document.getElementById('cmdProduit');
+    var sel  = document.getElementById('cmdProduit');
     if (sel) {
         var lubrifiants = lireDonnees("produits_lubrifiant");
         var accessoires = lireDonnees("produits_accessoire");
@@ -554,12 +743,9 @@ function chargerSectionGerant() {
             sel.innerHTML += `<option value="${p.nom} (${p.format})">${p.nom} — ${p.format}</option>`;
         });
     }
-
-    // Charger historique commandes de ce gérant
     var tbody     = document.getElementById('tbody-mescommandes');
     var commandes = lireDonnees("commandes");
     var miennes   = commandes.filter(function(c) { return c.station === user.station; });
-
     if (!tbody) return;
     tbody.innerHTML = miennes.length === 0
         ? '<tr><td colspan="4" class="px-5 py-8 text-center text-gray-400">Aucune commande</td></tr>'
@@ -573,54 +759,36 @@ function chargerSectionGerant() {
         }).join('');
 }
 
-
 function soumettreCommandeGerant(e) {
     e.preventDefault();
     hideMessage("cmdError");
     hideMessage("cmdSuccess");
-
     var user     = JSON.parse(sessionStorage.getItem("currentUser") || "{}");
     var produit  = document.getElementById("cmdProduit").value;
     var quantite = parseInt(document.getElementById("cmdQuantite").value);
-
-    if (!produit)            { showError("cmdError", "Choisissez un produit."); return; }
+    if (!produit)             { showError("cmdError", "Choisissez un produit."); return; }
     if (!quantite || quantite < 1) { showError("cmdError", "Quantité invalide."); return; }
-
     var commandes = lireDonnees("commandes");
     var numero    = "C-" + String(Date.now()).slice(-4);
-
     commandes.push({
-        numero:   numero,
-        date:     new Date().toLocaleDateString('fr-FR'),
-        station:  user.station || "—",
-        gerant:   user.nomComplet,
-        produit:  produit,
-        quantite: quantite,
-        statut:   "En attente"
+        numero, date: new Date().toLocaleDateString('fr-FR'),
+        station: user.station || "—", gerant: user.nomComplet,
+        produit, quantite, statut: "En attente"
     });
     sauvegarderDonnees("commandes", commandes);
-
     var s = document.getElementById("cmdSuccess");
     s.textContent = "Commande " + numero + " envoyée avec succès !";
     s.classList.remove("hidden");
-
     document.getElementById("formAjouterCommande").reset();
-
-    setTimeout(function() {
-        hideMessage("cmdSuccess");
-        chargerSectionGerant();
-    }, 1500);
+    setTimeout(function() { hideMessage("cmdSuccess"); chargerSectionGerant(); }, 1500);
 }
-
 
 function chargerTableauUtilisateurs() {
     if (!verifierAcces(["dg"])) return;
     var tbody = document.getElementById('tbody-utilisateurs');
     var users = lireDonnees("utilisateurs");
     if (!tbody) return;
-
-    var libelles = { dg: "DG Admin", gestionnaire: "Gestionnaire", gerant: "Gérant" };
-
+    var libelles = { dg: "DG Admin", gestionnaire: "Gestionnaire", gerant: "Gérant", client: "Client" };
     tbody.innerHTML = users.length === 0
         ? '<tr><td colspan="4" class="px-5 py-8 text-center text-gray-400">Aucun utilisateur inscrit</td></tr>'
         : users.map(function(u) {
@@ -638,13 +806,11 @@ function mettreAJourKPI() {
     var lubrifiants = lireDonnees("produits_lubrifiant");
     var accessoires = lireDonnees("produits_accessoire");
     var tous        = lubrifiants.concat(accessoires);
-
     var enCours    = commandes.filter(function(c) { return c.statut !== 'Livrée'; }).length;
     var totalStock = tous.reduce(function(acc, p) { return acc + p.quantite; }, 0);
     var alertes    = tous.filter(function(p) {
         return p.statut === 'Alerte' || p.statut === 'Épuisé' || p.statut === 'Bas';
     }).length;
-
     var kpiCmd = document.getElementById('kpi-commandes');
     var kpiStk = document.getElementById('kpi-stock');
     var kpiAlt = document.getElementById('kpi-alertes');
@@ -652,7 +818,6 @@ function mettreAJourKPI() {
     if (kpiStk) kpiStk.textContent = totalStock.toLocaleString('fr-FR');
     if (kpiAlt) kpiAlt.textContent = alertes;
 }
-
 
 function rechercherProduit(terme) {
     if (!terme || terme.length < 2) return;

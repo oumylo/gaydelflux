@@ -1,5 +1,3 @@
-
-
 function construireLogin() {
     document.getElementById("loginPage").innerHTML = `
         <div class="flex justify-center items-center min-h-screen p-4 bg-cover bg-center bg-no-repeat"
@@ -49,11 +47,15 @@ function construireLogin() {
                         Se connecter
                     </button>
 
-                    <p class="text-sm text-center text-gray-500">
-                        Pas de compte ?
-                        <a href="#" onclick="showPage('inscriptionPage')"
-                           class="text-brandOrange font-semibold hover:underline">S'inscrire</a>
-                    </p>
+                    <!-- Seul le client peut créer son compte ici -->
+                    <div class="border-t border-gray-200 pt-4 mt-2">
+                        <p class="text-sm text-center text-gray-500 mb-2">Vous êtes un client ?</p>
+                        <button type="button" onclick="showPage('inscriptionPage')"
+                            class="w-full border border-brandOrange text-brandOrange py-2 rounded-lg
+                                   text-sm font-semibold hover:bg-orange-50 transition">
+                            <i class="fa-solid fa-user-plus mr-2"></i>Créer un compte client
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -71,7 +73,7 @@ function construireLogin() {
 
         var userJSON = localStorage.getItem("user_" + matricule);
         if (!userJSON) {
-            showError("loginError", "Matricule introuvable. Inscrivez-vous d'abord.");
+            showError("loginError", "Matricule introuvable. Vérifiez vos identifiants.");
             return;
         }
 
@@ -81,7 +83,6 @@ function construireLogin() {
             return;
         }
 
-        
         sessionStorage.setItem("currentUser", JSON.stringify(user));
         document.getElementById("loginForm").reset();
         afficherDashboard(user);
