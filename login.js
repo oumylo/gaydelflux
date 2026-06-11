@@ -1,6 +1,4 @@
-// ================================================
-// login.js — construit + gère la connexion
-// ================================================
+
 
 function construireLogin() {
     document.getElementById("loginPage").innerHTML = `
@@ -83,7 +81,7 @@ function construireLogin() {
             return;
         }
 
-        // Sauvegarder la session
+        
         sessionStorage.setItem("currentUser", JSON.stringify(user));
         document.getElementById("loginForm").reset();
         afficherDashboard(user);

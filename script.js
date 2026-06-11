@@ -1,6 +1,3 @@
-// ================================================
-// script.js — navigation + données + rôles
-// ================================================
 
 var DONNEES_INITIALES = {
     produits_lubrifiant: [
@@ -25,22 +22,17 @@ var DONNEES_INITIALES = {
     utilisateurs: []
 };
 
-// ─────────────────────────────────────────────────────────────────────────
-// COMPTE DG PAR DÉFAUT
-// Créé automatiquement au premier lancement.
-// Ne passe JAMAIS par le formulaire d'inscription.
-// Pour changer le mot de passe : modifier ici et vider le localStorage.
-// ─────────────────────────────────────────────────────────────────────────
+
 var COMPTE_DG = {
     nomComplet : "Directeur Général",
     matricule  : "DG-001",
     role       : "dg",
     station    : null,
-    password   : "dg1234"   // ← changer ce mot de passe en production
+    password   : "dg1234"   
 };
 
 function initialiserDonnees() {
-    // Créer le compte DG s'il n'existe pas encore
+    
     if (!localStorage.getItem("user_" + COMPTE_DG.matricule)) {
         localStorage.setItem("user_" + COMPTE_DG.matricule, JSON.stringify(COMPTE_DG));
         console.log("Compte DG créé — matricule : " + COMPTE_DG.matricule);
@@ -56,7 +48,7 @@ function initialiserDonnees() {
         localStorage.setItem("gf_utilisateurs", JSON.stringify(DONNEES_INITIALES.utilisateurs));
 }
 
-// ── CRUD localStorage ─────────────────────────────────────────────────────
+
 function lireDonnees(cle) {
     var json = localStorage.getItem("gf_" + cle);
     return json ? JSON.parse(json) : [];
@@ -65,7 +57,7 @@ function sauvegarderDonnees(cle, tableau) {
     localStorage.setItem("gf_" + cle, JSON.stringify(tableau));
 }
 
-// ── Navigation SPA ─────────────────────────────────────────────────────────
+
 function showPage(pageId) {
     document.querySelectorAll("section").forEach(function (p) {
         p.classList.add("hidden");
@@ -74,7 +66,6 @@ function showPage(pageId) {
     if (cible) cible.classList.remove("hidden");
 }
 
-// ── Messages ───────────────────────────────────────────────────────────────
 function showError(id, message) {
     var el = document.getElementById(id);
     if (el) { el.textContent = message; el.classList.remove("hidden"); }
@@ -84,13 +75,13 @@ function hideMessage(id) {
     if (el) { el.textContent = ""; el.classList.add("hidden"); }
 }
 
-// ── Déconnexion ────────────────────────────────────────────────────────────
+
 function logout() {
     sessionStorage.removeItem("currentUser");
     showPage("loginPage");
 }
 
-// ── Afficher dashboard après connexion ────────────────────────────────────
+
 function afficherDashboard(user) {
     var nomEl = document.getElementById("dashNomUtilisateur");
     if (nomEl) nomEl.textContent = "Bonjour, " + user.nomComplet;
@@ -98,7 +89,7 @@ function afficherDashboard(user) {
     showPage("dashboardPage");
 }
 
-// ── Adapter l'interface selon le rôle ─────────────────────────────────────
+
 function adapterDashboardAuRole(user) {
     var role = user.role;
 
@@ -115,7 +106,7 @@ function adapterDashboardAuRole(user) {
         else                                     el.classList.add("hidden");
     });
 
-    // Badge rôle dans le sidebar
+    
     var badgeEl = document.getElementById("roleBadge");
     if (badgeEl) {
         var libelles = { dg: "DG Admin", gestionnaire: "Gestionnaire", gerant: "Gérant station" };
@@ -129,7 +120,7 @@ function adapterDashboardAuRole(user) {
                               (couleurs[role] || "bg-gray-100 text-gray-600");
     }
 
-    // Station du gérant
+   
     var stationEl = document.getElementById("userStation");
     if (stationEl) {
         if (role === "gerant" && user.station) {
@@ -140,11 +131,11 @@ function adapterDashboardAuRole(user) {
         }
     }
 
-    // Section par défaut
+    
     afficherSection("accueil");
 }
 
-// ── Vérifier l'accès à une section ────────────────────────────────────────
+
 function verifierAcces(rolesAutorises) {
     var userJSON = sessionStorage.getItem("currentUser");
     if (!userJSON) { showPage("loginPage"); return false; }
@@ -156,7 +147,7 @@ function verifierAcces(rolesAutorises) {
     return true;
 }
 
-// ── Utilitaires affichage ──────────────────────────────────────────────────
+
 function badgeStatut(statut) {
     var classes = {
         "Normal":     "bg-green-100 text-green-700",
@@ -179,7 +170,7 @@ function couleurQte(statut) {
     return "";
 }
 
-// ── Chargement initial ─────────────────────────────────────────────────────
+
 window.onload = function () {
     initialiserDonnees();
     construireAccueil();

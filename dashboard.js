@@ -1,9 +1,3 @@
-// ================================================
-// dashboard.js — dashboard adapté selon le rôle
-// data-role="dg"           → visible DG seulement
-// data-role="gestionnaire" → visible DG + gestionnaire
-// data-role="gerant"       → visible DG + gérant
-// ================================================
 
 function construireDashboard() {
     document.getElementById("dashboardPage").innerHTML = `
@@ -411,12 +405,12 @@ function construireDashboard() {
         </div>
     `;
 
-    // Attacher le formulaire commande gérant
+    
     document.getElementById("formAjouterCommande")
             .addEventListener("submit", soumettreCommandeGerant);
 }
 
-// ── Navigation interne ────────────────────────────────────────────────────
+
 var SECTIONS_DB = ['accueil','commandes','receptions','maCommande',
                    'utilisateurs','lubrifiant','accessoire','recherche'];
 var BTNS_DB     = ['accueil','commandes','receptions','maCommande','utilisateurs'];
@@ -442,7 +436,7 @@ function afficherSection(nom) {
         }
     });
 
-    // Charger les données selon la section
+  
     if (nom === 'lubrifiant')   chargerTableau('lubrifiant');
     if (nom === 'accessoire')   chargerTableau('accessoire');
     if (nom === 'commandes')    chargerTableauCommandes();
@@ -452,7 +446,7 @@ function afficherSection(nom) {
     if (nom === 'accueil')      mettreAJourKPI();
 }
 
-// ── Charger tableau stock ─────────────────────────────────────────────────
+
 function chargerTableau(type) {
     var cle   = type === 'lubrifiant' ? 'produits_lubrifiant' : 'produits_accessoire';
     var tbody = document.getElementById('tbody-' + type);
@@ -470,7 +464,7 @@ function chargerTableau(type) {
         }).join('');
 }
 
-// ── Charger tableau commandes (DG + gestionnaire) ─────────────────────────
+
 function chargerTableauCommandes() {
     var tbody     = document.getElementById('tbody-commandes');
     var commandes = lireDonnees("commandes");
@@ -480,7 +474,7 @@ function chargerTableauCommandes() {
     tbody.innerHTML = commandes.length === 0
         ? '<tr><td colspan="7" class="px-5 py-8 text-center text-gray-400">Aucune commande</td></tr>'
         : commandes.map(function(c) {
-            // Bouton valider visible seulement pour le DG
+          
             var btnValider = user.role === 'dg' && c.statut === 'En attente'
                 ? `<button onclick="validerCommandeDG('${c.numero}')"
                        class="bg-green-500 hover:bg-green-600 text-white text-xs
@@ -500,7 +494,7 @@ function chargerTableauCommandes() {
         }).join('');
 }
 
-// ── Valider une commande (DG) ─────────────────────────────────────────────
+
 function validerCommandeDG(numero) {
     var commandes = lireDonnees("commandes");
     commandes = commandes.map(function(c) {
@@ -511,7 +505,7 @@ function validerCommandeDG(numero) {
     chargerTableauCommandes();
 }
 
-// ── Charger select réceptions ─────────────────────────────────────────────
+
 function chargerSelectCommandes() {
     var sel       = document.getElementById('selectCommande');
     var commandes = lireDonnees("commandes");
@@ -523,7 +517,7 @@ function chargerSelectCommandes() {
              });
 }
 
-// ── Valider réception ─────────────────────────────────────────────────────
+
 function validerReception() {
     var sel    = document.getElementById('selectCommande');
     var numero = sel ? sel.value : '';
@@ -546,11 +540,11 @@ function validerReception() {
     }, 1500);
 }
 
-// ── Section gérant : charger produits + historique ────────────────────────
+
 function chargerSectionGerant() {
     var user = JSON.parse(sessionStorage.getItem("currentUser") || "{}");
 
-    // Charger select produits
+  
     var sel = document.getElementById('cmdProduit');
     if (sel) {
         var lubrifiants = lireDonnees("produits_lubrifiant");
@@ -579,7 +573,7 @@ function chargerSectionGerant() {
         }).join('');
 }
 
-// ── Soumettre commande gérant ─────────────────────────────────────────────
+
 function soumettreCommandeGerant(e) {
     e.preventDefault();
     hideMessage("cmdError");
@@ -618,7 +612,7 @@ function soumettreCommandeGerant(e) {
     }, 1500);
 }
 
-// ── Charger tableau utilisateurs (DG) ────────────────────────────────────
+
 function chargerTableauUtilisateurs() {
     if (!verifierAcces(["dg"])) return;
     var tbody = document.getElementById('tbody-utilisateurs');
@@ -639,7 +633,6 @@ function chargerTableauUtilisateurs() {
         }).join('');
 }
 
-// ── KPI ──────────────────────────────────────────────────────────────────
 function mettreAJourKPI() {
     var commandes   = lireDonnees("commandes");
     var lubrifiants = lireDonnees("produits_lubrifiant");
@@ -660,7 +653,7 @@ function mettreAJourKPI() {
     if (kpiAlt) kpiAlt.textContent = alertes;
 }
 
-// ── Recherche ─────────────────────────────────────────────────────────────
+
 function rechercherProduit(terme) {
     if (!terme || terme.length < 2) return;
     var tous      = lireDonnees("produits_lubrifiant").concat(lireDonnees("produits_accessoire"));

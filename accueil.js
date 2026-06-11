@@ -1,6 +1,3 @@
-// ================================================
-// accueil.js — page d'accueil
-// ================================================
 
 function construireAccueil() {
     document.getElementById("accueilPage").innerHTML = `
@@ -26,7 +23,7 @@ function construireAccueil() {
         </nav>
 
         <section class="relative w-full" style="height:420px">
-            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80"
+            <img src="images/acuueil.jpg"
                  alt="Lubrifiants"
                  class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0"
