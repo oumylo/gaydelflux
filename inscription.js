@@ -1,5 +1,7 @@
 // ================================================
-// inscription.js — construit + gère l'inscription
+// inscription.js
+// Accessible uniquement aux gestionnaires et gérants
+// Le DG ne peut PAS s'inscrire ici
 // ================================================
 
 function construireInscription() {
@@ -17,7 +19,18 @@ function construireInscription() {
                     <p class="text-sm text-gray-500">Gestion de distribution pétrolière</p>
                 </div>
 
-                <h2 class="text-brandBlue text-2xl font-semibold mb-4">Inscription</h2>
+                <h2 class="text-brandBlue text-2xl font-semibold mb-1">Inscription</h2>
+
+                <!-- Avertissement visible -->
+                <div class="bg-blue-50 border border-blue-200 text-blue-700 text-xs rounded-lg
+                            px-4 py-2 mb-4 text-left flex items-start gap-2">
+                    <i class="fa-solid fa-circle-info mt-0.5 flex-shrink-0"></i>
+                    <span>
+                        Cette page est réservée aux <strong>gestionnaires de stock</strong>
+                        et aux <strong>gérants de station</strong>.
+                        Le compte administrateur (DG) est géré séparément.
+                    </span>
+                </div>
 
                 <div id="inscriptionError"
                      class="hidden bg-red-50 border border-red-300 text-red-700 text-sm
@@ -48,7 +61,24 @@ function construireInscription() {
                         </div>
                     </div>
 
+                    <!-- Rôle : gestionnaire ou gérant uniquement -->
                     <div>
+                        <label class="text-sm font-medium text-gray-700">Rôle</label>
+                        <div class="relative mt-1">
+                            <i class="fa-solid fa-shield-halved absolute left-3 top-3 text-gray-400"></i>
+                            <select id="inscRole"
+                                class="w-full pl-9 py-2 border border-gray-300 rounded-lg bg-gray-50
+                                       focus:outline-none focus:border-brandBlue appearance-none"
+                                onchange="toggleChampStation()">
+                                <option value="">-- Choisir un rôle --</option>
+                                <option value="gestionnaire">Gestionnaire de stock</option>
+                                <option value="gerant">Gérant de station</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Station : visible seulement pour les gérants -->
+                    <div id="champStation" class="hidden">
                         <label class="text-sm font-medium text-gray-700">Station</label>
                         <div class="relative mt-1">
                             <i class="fa-solid fa-gas-pump absolute left-3 top-3 text-gray-400"></i>
@@ -99,51 +129,97 @@ function construireInscription() {
         </div>
     `;
 
-    document.getElementById("inscriptionForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        hideMessage("inscriptionError");
-        hideMessage("inscriptionSuccess");
+    document.getElementById("inscriptionForm")
+            .addEventListener("submit", soumettreInscription);
+}
 
-        var nomComplet      = document.getElementById("inscNom").value.trim();
-        var matricule       = document.getElementById("inscMatricule").value.trim().toUpperCase();
-        var station         = document.getElementById("inscStation").value;
-        var password        = document.getElementById("inscPassword").value;
-        var confirmPassword = document.getElementById("inscConfirmPassword").value;
+// Afficher/cacher station selon le rôle
+function toggleChampStation() {
+    var role  = document.getElementById("inscRole").value;
+    var champ = document.getElementById("champStation");
+    if (role === "gerant") {
+        champ.classList.remove("hidden");
+    } else {
+        champ.classList.add("hidden");
+        document.getElementById("inscStation").value = "";
+    }
+}
 
-        if (!nomComplet)  { showError("inscriptionError", "Le nom complet est obligatoire."); return; }
-        if (!matricule)   { showError("inscriptionError", "Le matricule est obligatoire."); return; }
-        if (!station)     { showError("inscriptionError", "Veuillez choisir une station."); return; }
-        if (password.length < 6) { showError("inscriptionError", "Mot de passe : minimum 6 caractères."); return; }
-        if (password !== confirmPassword) { showError("inscriptionError", "Les mots de passe ne correspondent pas."); return; }
+function soumettreInscription(e) {
+    e.preventDefault();
+    hideMessage("inscriptionError");
+    hideMessage("inscriptionSuccess");
 
-        if (localStorage.getItem("user_" + matricule)) {
-            showError("inscriptionError", "Ce matricule est déjà utilisé.");
-            return;
-        }
+    var nomComplet      = document.getElementById("inscNom").value.trim();
+    var matricule       = document.getElementById("inscMatricule").value.trim().toUpperCase();
+    var role            = document.getElementById("inscRole").value;
+    var station         = document.getElementById("inscStation").value;
+    var password        = document.getElementById("inscPassword").value;
+    var confirmPassword = document.getElementById("inscConfirmPassword").value;
 
-        // Sauvegarder l'utilisateur en JSON
-        var user = {
-            nomComplet: nomComplet,
-            matricule:  matricule,
-            station:    station,
-            password:   password,
-            dateInscription: new Date().toLocaleDateString('fr-FR')
-        };
-        localStorage.setItem("user_" + matricule, JSON.stringify(user));
+    // Validations
+    if (!nomComplet) { showError("inscriptionError", "Le nom complet est obligatoire."); return; }
+    if (!matricule)  { showError("inscriptionError", "Le matricule est obligatoire."); return; }
+    if (!role)       { showError("inscriptionError", "Veuillez choisir un rôle."); return; }
 
-        // Ajouter à la liste des utilisateurs
-        var listeUsers = lireDonnees("utilisateurs");
-        listeUsers.push({ nomComplet: nomComplet, matricule: matricule, station: station });
-        sauvegarderDonnees("utilisateurs", listeUsers);
+    // Sécurité : bloquer toute tentative de créer un compte DG
+    if (role === "dg") {
+        showError("inscriptionError", "Impossible de créer un compte administrateur via ce formulaire.");
+        return;
+    }
 
-        var s = document.getElementById("inscriptionSuccess");
-        s.textContent = "Inscription réussie ! Redirection vers la connexion...";
-        s.classList.remove("hidden");
-        document.getElementById("inscriptionForm").reset();
+    // Bloquer si quelqu'un tape manuellement "DG" dans le matricule
+    if (matricule === "DG-001" || matricule.startsWith("DG-")) {
+        showError("inscriptionError", "Ce format de matricule est réservé à l'administration.");
+        return;
+    }
 
-        setTimeout(function () {
-            hideMessage("inscriptionSuccess");
-            showPage("loginPage");
-        }, 1500);
+    if (role === "gerant" && !station) {
+        showError("inscriptionError", "Un gérant doit choisir sa station.");
+        return;
+    }
+    if (password.length < 6) {
+        showError("inscriptionError", "Mot de passe : minimum 6 caractères.");
+        return;
+    }
+    if (password !== confirmPassword) {
+        showError("inscriptionError", "Les mots de passe ne correspondent pas.");
+        return;
+    }
+    if (localStorage.getItem("user_" + matricule)) {
+        showError("inscriptionError", "Ce matricule est déjà utilisé.");
+        return;
+    }
+
+    // Sauvegarder l'utilisateur
+    var user = {
+        nomComplet : nomComplet,
+        matricule  : matricule,
+        role       : role,
+        station    : station || null,
+        password   : password,
+        dateInscription: new Date().toLocaleDateString('fr-FR')
+    };
+    localStorage.setItem("user_" + matricule, JSON.stringify(user));
+
+    // Ajouter à la liste des utilisateurs visible par le DG
+    var liste = lireDonnees("utilisateurs");
+    liste.push({
+        nomComplet : nomComplet,
+        matricule  : matricule,
+        role       : role,
+        station    : station || "—"
     });
+    sauvegarderDonnees("utilisateurs", liste);
+
+    var s = document.getElementById("inscriptionSuccess");
+    s.textContent = "Inscription réussie ! Redirection vers la connexion...";
+    s.classList.remove("hidden");
+    document.getElementById("inscriptionForm").reset();
+    toggleChampStation();
+
+    setTimeout(function () {
+        hideMessage("inscriptionSuccess");
+        showPage("loginPage");
+    }, 1500);
 }
